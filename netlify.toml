@@ -1,0 +1,6 @@
+[build]
+  command = "prisma migrate deploy && next build"
+  publish = ".next"
+
+[context.production.environment]
+  DATABASE_URL = "${NETLIFY_DATABASE_URL}"  # map Netlify’s Neon URL to Prisma’s expected var

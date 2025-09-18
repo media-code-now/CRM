@@ -1,15 +1,15 @@
 // Prisma schema for Mini CRM
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  previewFeatures = ["driverAdapters"]   // needed if you use the Neon adapter
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  // Optional if you want a direct non-pooled URL for migrations only
-  // directUrl = env("DIRECT_URL")
+  // directUrl = env("DIRECT_URL")        // optional
 }
+
 
 
 model User {
