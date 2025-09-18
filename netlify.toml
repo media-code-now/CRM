@@ -3,4 +3,10 @@
   publish = ".next"
 
 [context.production.environment]
-  DATABASE_URL = "${NETLIFY_DATABASE_URL}"  # map Netlify’s Neon URL to Prisma’s expected var
+  DATABASE_URL = "${NETLIFY_DATABASE_URL}"
+
+[context.deploy-preview.environment]
+  DATABASE_URL = "${NETLIFY_DATABASE_URL}"
+
+[context.branch-deploy.environment]
+  DATABASE_URL = "${NETLIFY_DATABASE_URL}"
