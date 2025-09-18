@@ -1,0 +1,15 @@
+/* src/app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root { --bg: #0b0b0c; --fg: #fafafa; }
+body { color: var(--fg); background: #0f1115; }
+.container { max-width: 1100px; margin: 0 auto; padding: 1rem; }
+.card { @apply rounded-2xl border border-white/10 p-4 bg-white/5; }
+.btn { @apply inline-flex items-center gap-2 rounded-2xl px-4 py-2 border border-white/10 hover:bg-white/10; }
+.input { @apply w-full rounded-2xl border border-white/15 bg-white/5 px-3 py-2; }
+.label { @apply text-sm text-white/80; }
+.table { @apply w-full text-sm; }
+th, td { @apply border-b border-white/10 px-3 py-2 text-left; }

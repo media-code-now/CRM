@@ -1,0 +1,143 @@
+// Prisma schema for Mini CRM
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  projects     Project[]
+  auditLogs    AuditLog[]
+}
+
+model Company {
+  id        String   @id @default(cuid())
+  name      String
+  domain    String?
+  timezone  String?
+  contacts  Contact[]
+  projects  Project[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+  company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+  name      String
+  email     String?
+  phone     String?
+  role      String?
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id          String       @id @default(cuid())
+  company     Company?     @relation(fields: [companyId], references: [id])
+  companyId   String?
+  owner       User?        @relation(fields: [ownerId], references: [id])
+  ownerId     String?
+  name        String
+  stage       ProjectStage @default(DISCOVERY)
+  valueUSD    Int?
+  repoUrl     String?
+  prodUrl     String?
+  analyticsId String?
+  tasks       Task[]
+  assets      Asset[]
+  credentials CredentialRef[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum ProjectStage {
+  LEAD
+  DISCOVERY
+  PROPOSAL
+  IN_PROGRESS
+  QA
+  LAUNCHED
+  RETAINER
+}
+
+model Task {
+  id        String     @id @default(cuid())
+  project   Project?   @relation(fields: [projectId], references: [id])
+  projectId String?
+  title     String
+  status    TaskStatus @default(TODO)
+  priority  Int        @default(3) // 1 high - 5 low
+  dueAt     DateTime?
+  blockedBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum TaskStatus {
+  TODO
+  DOING
+  BLOCKED
+  REVIEW
+  DONE
+}
+
+model Asset {
+  id        String   @id @default(cuid())
+  project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?
+  type      AssetType
+  name      String
+  url       String?
+  meta      Json?
+  renewsAt  DateTime?
+}
+
+enum AssetType {
+  DOMAIN
+  HOSTING
+  DNS
+  CMS
+  ANALYTICS
+  TAG_MANAGER
+  AD_ACCOUNT
+  CDN
+  SSL
+  OTHER
+}
+
+model CredentialRef {
+  id                     String   @id @default(cuid())
+  project                Project? @relation(fields: [projectId], references: [id])
+  projectId              String?
+  system                 String
+  accountEmail           String
+  externalVaultItemUrl   String // link or external ID to password manager
+  mfaEnabled             Boolean @default(true)
+  rotationDays           Int?
+  lastRotatedAt          DateTime?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  entity    String
+  entityId  String
+  action    String
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
