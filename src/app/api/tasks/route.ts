@@ -1,27 +1,37 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-type Params = { params: { id: string } }
 
-export async function PATCH(req: Request, { params }: Params) {
+export async function GET() {
   try {
-    const data = await req.json()
-    const updated = await prisma.task.update({
-      where: { id: params.id },
-      data: { title: data.title, status: data.status, priority: Number(data.priority ?? 3) }
+    const tasks = await prisma.task.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: {
+        project: {
+          select: { name: true, company: { select: { name: true } } }
+        }
+      }
     })
-    return NextResponse.json(updated)
+    return NextResponse.json(tasks)
   } catch (e: any) {
-    console.error('tasks PATCH', e)
+    console.error('tasks GET', e)
     return NextResponse.json({ error: e?.message || 'DB error' }, { status: 500 })
   }
 }
 
-export async function DELETE(_: Request, { params }: Params) {
+export async function POST(req: NextRequest) {
   try {
-    await prisma.task.delete({ where: { id: params.id } })
-    return NextResponse.json({ ok: true })
+    const data = await req.json()
+    const task = await prisma.task.create({
+      data: {
+        title: data.title,
+        status: data.status || 'TODO',
+        priority: Number(data.priority ?? 3),
+        projectId: data.projectId || null
+      }
+    })
+    return NextResponse.json(task, { status: 201 })
   } catch (e: any) {
-    console.error('tasks DELETE', e)
+    console.error('tasks POST', e)
     return NextResponse.json({ error: e?.message || 'DB error' }, { status: 500 })
   }
 }
