@@ -65,28 +65,30 @@ export default function CredentialsPage() {
         <input className="input" value={form.rotationDays} onChange={e=>setForm(s=>({...s, rotationDays:e.target.value}))} />
         <button className="btn" onClick={create}>Add credential ref</button>
       </div>
-      <table className="table">
-        <thead><tr><th>System</th><th>Account</th><th>MFA</th><th>Item</th><th>Rotation</th></tr></thead>
-        <tbody>
-          {items.map(x => (
-            <tr key={x.id}>
-              <td>{x.system}</td>
-              <td>{x.accountEmail}</td>
-              <td>{x.mfaEnabled ? 'Yes' : 'No'}</td>
-              <td>
-                {x.externalVaultItemUrl ? (
-                  <a className="underline" href={normalizeUrl(x.externalVaultItemUrl)} target="_blank" rel="noopener noreferrer">
-                    Open in vault
-                  </a>
-                ) : (
-                  <span className="text-gray-500">No URL</span>
-                )}
-              </td>
-              <td>{x.rotationDays ?? ''}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="table min-w-[36rem]">
+          <thead><tr><th>System</th><th>Account</th><th>MFA</th><th>Item</th><th>Rotation</th></tr></thead>
+          <tbody>
+            {items.map(x => (
+              <tr key={x.id}>
+                <td>{x.system}</td>
+                <td>{x.accountEmail}</td>
+                <td>{x.mfaEnabled ? 'Yes' : 'No'}</td>
+                <td>
+                  {x.externalVaultItemUrl ? (
+                    <a className="underline" href={normalizeUrl(x.externalVaultItemUrl)} target="_blank" rel="noopener noreferrer">
+                      Open in vault
+                    </a>
+                  ) : (
+                    <span className="text-gray-500">No URL</span>
+                  )}
+                </td>
+                <td>{x.rotationDays ?? ''}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
@@ -122,4 +124,3 @@ function normalizeUrl(u: string) {
     return `https://${trimmed.replace(/^\/+/, '')}`;
   }
 }
-

@@ -71,48 +71,50 @@ export default function ProjectsPage() {
         <button className="btn" onClick={create}>Add project</button>
       </div>
 
-      <table className="table">
-        <thead><tr><th>Name</th><th>Stage</th><th>Value</th><th>Company</th><th>Actions</th></tr></thead>
-        <tbody>
-          {items.map(x => (
-            <tr key={x.id}>
-              <td>{editing?.id === x.id
-                ? <input className="input" value={editing.name} onChange={e=>setEditing({...editing, name:e.target.value})} />
-                : x.name}
-              </td>
-              <td>{editing?.id === x.id
-                ? <select className="input" value={editing.stage} onChange={e=>setEditing({...editing, stage:e.target.value})}>
-                    {STAGES.map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                : x.stage}
-              </td>
-              <td>{editing?.id === x.id
-                ? <input className="input" value={editing.valueUSD ?? ''} onChange={e=>setEditing({...editing, valueUSD: Number(e.target.value || 0)})} />
-                : (x.valueUSD ?? '')}
-              </td>
-              <td>{editing?.id === x.id
-                ? <select className="input" value={editing.companyId ?? ''} onChange={e=>setEditing({...editing, companyId: e.target.value || null})}>
-                    <option value="">No company</option>
-                    {companies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                  </select>
-                : x.company?.name ?? ''}
-              </td>
-              <td className="flex gap-2">
-                {editing?.id === x.id
-                  ? (<>
-                      <button className="btn" onClick={saveEdit}>Save</button>
-                      <button className="btn" onClick={()=>setEditing(null)}>Cancel</button>
-                    </>)
-                  : (<>
-                      <button className="btn" onClick={()=>setEditing(x)}>Edit</button>
-                      <button className="btn" onClick={()=>remove(x.id)}>Delete</button>
-                    </>)
-                }
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="table min-w-[42rem]">
+          <thead><tr><th>Name</th><th>Stage</th><th>Value</th><th>Company</th><th>Actions</th></tr></thead>
+          <tbody>
+            {items.map(x => (
+              <tr key={x.id}>
+                <td>{editing?.id === x.id
+                  ? <input className="input" value={editing.name} onChange={e=>setEditing({...editing, name:e.target.value})} />
+                  : x.name}
+                </td>
+                <td>{editing?.id === x.id
+                  ? <select className="input" value={editing.stage} onChange={e=>setEditing({...editing, stage:e.target.value})}>
+                      {STAGES.map(s => <option key={s} value={s}>{s}</option>)}
+                    </select>
+                  : x.stage}
+                </td>
+                <td>{editing?.id === x.id
+                  ? <input className="input" value={editing.valueUSD ?? ''} onChange={e=>setEditing({...editing, valueUSD: Number(e.target.value || 0)})} />
+                  : (x.valueUSD ?? '')}
+                </td>
+                <td>{editing?.id === x.id
+                  ? <select className="input" value={editing.companyId ?? ''} onChange={e=>setEditing({...editing, companyId: e.target.value || null})}>
+                      <option value="">No company</option>
+                      {companies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                    </select>
+                  : x.company?.name ?? ''}
+                </td>
+                <td className="flex gap-2">
+                  {editing?.id === x.id
+                    ? (<>
+                        <button className="btn" onClick={saveEdit}>Save</button>
+                        <button className="btn" onClick={()=>setEditing(null)}>Cancel</button>
+                      </>)
+                    : (<>
+                        <button className="btn" onClick={()=>setEditing(x)}>Edit</button>
+                        <button className="btn" onClick={()=>remove(x.id)}>Delete</button>
+                      </>)
+                  }
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

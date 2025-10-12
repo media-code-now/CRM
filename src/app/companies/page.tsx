@@ -31,14 +31,16 @@ export default function CompaniesPage() {
         <button className="btn" onClick={create}>Add company</button>
       </div>
 
-      <table className="table">
-        <thead><tr><th>Name</th><th>Domain</th><th>Timezone</th></tr></thead>
-        <tbody>
-          {items.map(x => (
-            <tr key={x.id}><td>{x.name}</td><td>{x.domain}</td><td>{x.timezone}</td></tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="table min-w-[30rem]">
+          <thead><tr><th>Name</th><th>Domain</th><th>Timezone</th></tr></thead>
+          <tbody>
+            {items.map(x => (
+              <tr key={x.id}><td>{x.name}</td><td>{x.domain}</td><td>{x.timezone}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

@@ -60,39 +60,41 @@ export default function CompaniesPage() {
         <button className="btn" onClick={create} disabled={loading}>{loading ? 'Saving...' : 'Add company'}</button>
       </div>
 
-      <table className="table">
-        <thead><tr><th>Name</th><th>Domain</th><th>Timezone</th><th>Actions</th></tr></thead>
-        <tbody>
-          {items.map(x => (
-            <tr key={x.id}>
-              <td>{editing?.id === x.id
-                ? <input className="input" value={editing.name} onChange={e=>setEditing({...editing, name:e.target.value})} />
-                : x.name}
-              </td>
-              <td>{editing?.id === x.id
-                ? <input className="input" value={editing.domain ?? ''} onChange={e=>setEditing({...editing, domain:e.target.value})} />
-                : x.domain}
-              </td>
-              <td>{editing?.id === x.id
-                ? <input className="input" value={editing.timezone ?? ''} onChange={e=>setEditing({...editing, timezone:e.target.value})} />
-                : x.timezone}
-              </td>
-              <td className="flex gap-2">
-                {editing?.id === x.id
-                  ? (<>
-                      <button className="btn" onClick={update}>Save</button>
-                      <button className="btn" onClick={()=>setEditing(null)}>Cancel</button>
-                    </>)
-                  : (<>
-                      <button className="btn" onClick={()=>setEditing(x)}>Edit</button>
-                      <button className="btn" onClick={()=>remove(x.id)}>Delete</button>
-                    </>)
-                }
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="table min-w-[42rem]">
+          <thead><tr><th>Name</th><th>Domain</th><th>Timezone</th><th>Actions</th></tr></thead>
+          <tbody>
+            {items.map(x => (
+              <tr key={x.id}>
+                <td>{editing?.id === x.id
+                  ? <input className="input" value={editing.name} onChange={e=>setEditing({...editing, name:e.target.value})} />
+                  : x.name}
+                </td>
+                <td>{editing?.id === x.id
+                  ? <input className="input" value={editing.domain ?? ''} onChange={e=>setEditing({...editing, domain:e.target.value})} />
+                  : x.domain}
+                </td>
+                <td>{editing?.id === x.id
+                  ? <input className="input" value={editing.timezone ?? ''} onChange={e=>setEditing({...editing, timezone:e.target.value})} />
+                  : x.timezone}
+                </td>
+                <td className="flex gap-2">
+                  {editing?.id === x.id
+                    ? (<>
+                        <button className="btn" onClick={update}>Save</button>
+                        <button className="btn" onClick={()=>setEditing(null)}>Cancel</button>
+                      </>)
+                    : (<>
+                        <button className="btn" onClick={()=>setEditing(x)}>Edit</button>
+                        <button className="btn" onClick={()=>remove(x.id)}>Delete</button>
+                      </>)
+                  }
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

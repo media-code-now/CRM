@@ -45,23 +45,25 @@ export default function TasksPage() {
         <button className="btn" onClick={create}>Add task</button>
       </div>
 
-      <table className="table">
-        <thead><tr><th>Title</th><th>Status</th><th>Priority</th><th>Actions</th></tr></thead>
-        <tbody>
-          {items.map(x => (
-            <tr key={x.id}>
-              <td>{x.title}</td>
-              <td className="flex gap-2 flex-wrap">
-                {STATUSES.map(s => (
-                  <button key={s} className={`btn ${x.status===s ? 'bg-white/10' : ''}`} onClick={()=>update(x.id, { status: s })}>{s}</button>
-                ))}
-              </td>
-              <td>{x.priority}</td>
-              <td><button className="btn" onClick={()=>remove(x.id)}>Delete</button></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="table min-w-[40rem]">
+          <thead><tr><th>Title</th><th>Status</th><th>Priority</th><th>Actions</th></tr></thead>
+          <tbody>
+            {items.map(x => (
+              <tr key={x.id}>
+                <td>{x.title}</td>
+                <td className="flex gap-2 flex-wrap">
+                  {STATUSES.map(s => (
+                    <button key={s} className={`btn ${x.status===s ? 'bg-white/10' : ''}`} onClick={()=>update(x.id, { status: s })}>{s}</button>
+                  ))}
+                </td>
+                <td>{x.priority}</td>
+                <td><button className="btn" onClick={()=>remove(x.id)}>Delete</button></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
